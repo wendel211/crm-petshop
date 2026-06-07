@@ -22,6 +22,10 @@ Rotina diaria:
 Regras:
 - Nao pedir permissao para executar tarefas normais do ciclo.
 - Priorizar incrementos pequenos.
+- Nao acumular muitas mudancas antes de subir.
+- Usar commits pequenos, coesos e com mensagens claras.
+- Rodar lint e build antes de abrir PR em mudancas Next.js.
+- Abrir PR com resumo, validacoes executadas e riscos conhecidos.
 - Evitar refactors grandes.
 - Usar portugues do Brasil.
 - Considerar WhatsApp, agenda, recompra e relacionamento como areas de alto valor.
