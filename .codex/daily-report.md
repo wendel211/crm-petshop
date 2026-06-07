@@ -79,3 +79,21 @@
 
 - Abrir PR pequeno com a primeira tela funcional.
 - Criar formularios reais para clientes, pets e agenda.
+
+## 2026-06-07 - Decisao de Banco
+
+### Feito
+
+- PostgreSQL definido como banco oficial do CRM Pet Feira.
+- Prisma definido como camada recomendada para schema e migrations.
+- Criado `.codex/structure.md` com arquitetura de dados e roadmap tecnico.
+- Backlog atualizado para priorizar persistencia real com PostgreSQL.
+
+### Validacao
+
+- Alteracao documental e de planejamento; nao ha codigo de banco para validar ainda.
+
+### Proximo ciclo
+
+- Adicionar Prisma.
+- Criar schema inicial com `Company`, `User`, `Customer`, `Pet`, `Service`, `Appointment`, `Product`, `Sale`, `Interaction` e `Reminder`.

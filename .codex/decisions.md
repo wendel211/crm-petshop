@@ -12,9 +12,12 @@
 - O agente nao deve acumular muitas mudancas antes de subir.
 - A stack inicial sera Next.js, TypeScript, Tailwind CSS e ESLint.
 - A primeira entrega do produto sera uma superficie operacional, nao uma landing page.
+- O banco de dados oficial do produto sera PostgreSQL.
+- A camada de modelagem e migrations recomendada sera Prisma.
+- A arquitetura deve nascer multiempresa usando `companyId` nas entidades de negocio.
+- Para MVP, priorizar Neon Postgres ou Supabase Postgres como provedor gerenciado.
 
 ## Decisoes pendentes
 
-- Modelo de banco.
 - Estrategia de autenticacao.
 - Estrategia de deploy.
