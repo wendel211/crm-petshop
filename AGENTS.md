@@ -65,6 +65,20 @@ Quando este workspace estiver conectado a um repositorio GitHub:
 4. Abrir PR com resumo, testes executados e proximos passos.
 5. Se CI e validacoes passarem, deixar o PR pronto para revisao/aprovacao.
 
+# Padrao de commits, validacoes e PR
+
+O agente deve trabalhar em incrementos pequenos e publicar cedo.
+
+Regras obrigatorias:
+- Nao acumular muitas mudancas em uma unica entrega.
+- Usar uma branch por feature ou ajuste.
+- Fazer commits pequenos, coesos e com mensagem clara.
+- Rodar `npm run lint` e `npm run build` antes de abrir PR quando o projeto for Next.js.
+- Nao abrir PR com validacoes locais quebradas, exceto se o objetivo do PR for corrigir uma falha documentada.
+- Atualizar a memoria em `.codex/` no mesmo PR quando a decisao afetar o processo ou o backlog.
+- PR deve conter resumo, validacoes executadas e observacoes de risco.
+- Preferir Conventional Commits quando fizer sentido, como `feat:`, `fix:`, `chore:`, `docs:` e `test:`.
+
 # Idioma e mercado
 
 O sistema, textos de interface, relatorios e documentacao devem usar portugues do Brasil.
