@@ -2,10 +2,9 @@
 
 ## Agora
 
-- Definir stack inicial do sistema.
-- Criar estrutura base do projeto.
+- Criar formularios funcionais para clientes, pets e agenda.
+- Definir persistencia inicial do MVP.
 - Modelar entidades principais: empresa, usuario, cliente, pet, atendimento, agendamento, produto e venda.
-- Criar tela inicial operacional, sem landing page, focada no uso diario.
 - Criar cadastro de clientes.
 - Criar cadastro de pets vinculado ao cliente.
 - Criar agenda de banho, tosa, consulta e vacina.
