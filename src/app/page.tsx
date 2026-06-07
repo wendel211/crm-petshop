@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 const metrics = [
   { label: "Agendamentos hoje", value: "18", detail: "6 banho e tosa em aberto" },
   { label: "Clientes ativos", value: "342", detail: "28 novos nos ultimos 30 dias" },
@@ -49,6 +51,56 @@ const opportunities = [
   "Reativar 8 clientes sem visita ha mais de 60 dias",
 ];
 
+const reminders = [
+  {
+    tutor: "Mariana Alves",
+    pet: "Luna",
+    reason: "Banho e tosa confirmado para hoje as 08:30",
+    due: "Hoje, 07:45",
+    phone: "(75) 99124-8821",
+    priority: "Hoje",
+    message:
+      "Oi, Mariana! A Luna esta confirmada para banho e tosa hoje as 08:30. Se precisar ajustar o horario, responde aqui.",
+  },
+  {
+    tutor: "Joao Pereira",
+    pet: "Thor",
+    reason: "Vacina V10 agendada para hoje as 10:00",
+    due: "Hoje, 09:15",
+    phone: "(75) 98802-1193",
+    priority: "Confirmar",
+    message:
+      "Oi, Joao! Passando para confirmar a vacina V10 do Thor hoje as 10:00. Posso manter esse horario?",
+  },
+  {
+    tutor: "Carla Souza",
+    pet: "Mel",
+    reason: "Retorno clinico pendente desde ontem",
+    due: "Atrasado",
+    phone: "(75) 99744-3308",
+    priority: "Atrasado",
+    message:
+      "Oi, Carla! A Mel ficou com retorno clinico pendente. Quer que eu reserve um novo horario para voce ainda esta semana?",
+  },
+];
+
+function formatWhatsappNumber(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+
+  if (digits.startsWith("55")) {
+    return digits;
+  }
+
+  return `55${digits}`;
+}
+
+function buildWhatsappLink(phone: string, message: string) {
+  const target = formatWhatsappNumber(phone);
+  const encodedMessage = encodeURIComponent(message);
+
+  return `https://wa.me/${target}?text=${encodedMessage}`;
+}
+
 function StatusBadge({ status }: { status: string }) {
   const tone =
     status === "Confirmado"
@@ -65,6 +117,12 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function Home() {
+  const todayLabel = new Intl.DateTimeFormat("pt-BR", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+  }).format(new Date());
+
   return (
     <main className="min-h-screen bg-[#f6f4ef] text-[#1f2520]">
       <div className="grid min-h-screen lg:grid-cols-[260px_1fr]">
@@ -104,9 +162,7 @@ export default function Home() {
         <section className="px-5 py-6 sm:px-8 lg:px-10">
           <header className="flex flex-col gap-4 border-b border-[#ded8ca] pb-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="text-sm font-medium text-[#60725a]">
-                Sabado, 06 de junho
-              </p>
+              <p className="text-sm font-medium text-[#60725a]">{todayLabel}</p>
               <h2 className="mt-2 text-3xl font-semibold tracking-normal">
                 Visao do pet shop
               </h2>
@@ -151,7 +207,7 @@ export default function Home() {
                     </span>
                     <div>
                       <p className="font-medium">
-                        {appointment.pet} · {appointment.service}
+                        {appointment.pet} - {appointment.service}
                       </p>
                       <p className="mt-1 text-sm text-[#6e746a]">
                         Tutor: {appointment.tutor}
@@ -179,6 +235,98 @@ export default function Home() {
                     {item}
                   </button>
                 ))}
+              </div>
+            </section>
+          </div>
+
+          <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <section className="rounded-lg border border-[#ded8ca] bg-white">
+              <div className="flex items-center justify-between border-b border-[#ebe6dc] px-4 py-4">
+                <div>
+                  <h3 className="text-base font-semibold">
+                    Central de lembretes WhatsApp
+                  </h3>
+                  <p className="mt-1 text-sm text-[#60725a]">
+                    Mensagens prontas para confirmar agenda e evitar perda de
+                    retorno.
+                  </p>
+                </div>
+                <span className="rounded-full bg-[#edf4ec] px-3 py-1 text-xs font-semibold text-[#2f6f5e]">
+                  {reminders.length} contatos
+                </span>
+              </div>
+
+              <div className="divide-y divide-[#ebe6dc]">
+                {reminders.map((reminder) => (
+                  <div
+                    key={`${reminder.phone}-${reminder.reason}`}
+                    className="grid gap-4 px-4 py-4 lg:grid-cols-[1fr_auto]"
+                  >
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-medium">
+                          {reminder.tutor} - {reminder.pet}
+                        </p>
+                        <span className="rounded-full bg-[#faf3dc] px-2 py-1 text-xs font-medium text-[#8a6b1f]">
+                          {reminder.priority}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm text-[#37413a]">
+                        {reminder.reason}
+                      </p>
+                      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm text-[#60725a]">
+                        <span>Disparo sugerido: {reminder.due}</span>
+                        <span className="font-mono">{reminder.phone}</span>
+                      </div>
+                    </div>
+
+                    <a
+                      className="inline-flex items-center justify-center rounded-md bg-[#2f6f5e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#285f51]"
+                      href={buildWhatsappLink(reminder.phone, reminder.message)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Abrir WhatsApp
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="rounded-lg border border-[#ded8ca] bg-[#20251f] text-white">
+              <div className="border-b border-white/10 px-4 py-4">
+                <h3 className="text-base font-semibold">Prioridades do turno</h3>
+                <p className="mt-1 text-sm text-[#b8c7b0]">
+                  Ordem sugerida para uma equipe enxuta atender logo cedo.
+                </p>
+              </div>
+              <div className="grid gap-3 px-4 py-4 text-sm">
+                <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#b8c7b0]">
+                    1. Confirmacoes
+                  </p>
+                  <p className="mt-2 leading-6">
+                    Disparar primeiro os lembretes de agenda das 08:30 e 10:00.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#b8c7b0]">
+                    2. Retornos
+                  </p>
+                  <p className="mt-2 leading-6">
+                    Recuperar clientes atrasados antes do meio-dia aumenta a
+                    chance de resposta.
+                  </p>
+                </div>
+                <div className="rounded-lg border border-white/10 bg-white/5 px-3 py-3">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[#b8c7b0]">
+                    3. Recompra
+                  </p>
+                  <p className="mt-2 leading-6">
+                    Reservar o fim da tarde para racao e medicamentos com
+                    recorrencia.
+                  </p>
+                </div>
               </div>
             </section>
           </div>
