@@ -36,6 +36,13 @@ Executar diariamente as 09:00 no horario de Brasilia.
 
 Criar formulario funcional de novo cliente com pet vinculado, ainda em persistencia local simples antes de escolher banco.
 
+## Preferencia de publicacao
+
+- Criar PR automaticamente nas proximas entregas quando as validacoes locais passarem.
+- Se o conector GitHub retornar erro, tentar a API do GitHub com a credencial local do Git Credential Manager.
+- Aplicar labels `codex` e `codex-automation` quando disponiveis.
+- Tentar aprovar automaticamente o PR apos validacoes, mas registrar bloqueio quando o GitHub impedir aprovacao do proprio PR.
+
 ## Decisoes em aberto
 
 - Nome comercial final.
