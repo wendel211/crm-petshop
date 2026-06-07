@@ -13,6 +13,7 @@
 - Removida dependencia de Google Fonts no build local, usando fontes de sistema.
 - Ajustado pipeline de validacao com `npm run typecheck` antes do `next build`.
 - Configurado Next para usar `workerThreads` e `cpus: 1`, evitando falha `spawn EPERM` no ambiente Windows/Codex.
+- Criada branch `feat/lembretes-whatsapp` e enviada ao GitHub.
 
 ### Validacao
 
@@ -22,6 +23,13 @@
 - Servidor local respondeu HTTP 200 em `http://127.0.0.1:3000`.
 - Verificacao visual via Browser em desktop confirmou central de lembretes, prioridades do turno, titulo correto e 3 links WhatsApp.
 - Verificacao mobile em 390x844 confirmou ausencia de overflow horizontal e console sem erros/warnings.
+
+### Publicacao
+
+- Commit criado: `9388b26 feat: add WhatsApp reminder hub`.
+- Branch remota: `origin/feat/lembretes-whatsapp`.
+- PR nao foi criado automaticamente porque o conector GitHub retornou `403 Resource not accessible by integration`.
+- URL para abrir PR manualmente: `https://github.com/wendel211/crm-petshop/pull/new/feat/lembretes-whatsapp`.
 
 ### Proximo ciclo
 
