@@ -17,6 +17,12 @@ Conduzir o desenvolvimento continuo deste sistema com ciclos diarios automatizad
 
 Workspace inicial configurado com memoria do agente, backlog de produto e repositorio GitHub conectado.
 
+Ultimo ciclo executado em 2026-06-07:
+- Adicionada central inicial de lembretes WhatsApp na tela operacional.
+- Adicionadas mensagens prontas com links `wa.me` para confirmacao de agenda e retorno.
+- Data do painel passou a ser dinamica para a operacao do dia.
+- Build ajustado para ambiente Windows/Codex: fontes locais, `typecheck` explicito e workers do Next via threads com `cpus: 1`.
+
 Ainda pendente:
 - Evoluir a primeira versao funcional com formularios reais.
 - Adicionar persistencia de dados.
@@ -28,7 +34,7 @@ Executar diariamente as 09:00 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar formularios e persistencia inicial para clientes, pets e agenda.
+Criar formulario funcional de novo cliente com pet vinculado, ainda em persistencia local simples antes de escolher banco.
 
 ## Decisoes em aberto
 

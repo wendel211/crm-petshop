@@ -1,5 +1,10 @@
 # Backlog do CRM Pet Feira
 
+## Entregue
+
+- Painel operacional inicial com agenda, clientes e oportunidades.
+- Central inicial de lembretes WhatsApp com mensagens prontas para confirmacao de agenda e recuperacao de retorno.
+
 ## Agora
 
 - Criar formularios funcionais para clientes, pets e agenda.
@@ -12,7 +17,7 @@
 
 ## Proximas features comerciais
 
-- Lembrete de retorno por WhatsApp.
+- Transformar lembretes WhatsApp mockados em fluxo com dados reais.
 - Controle de recompra de racao.
 - Aniversario do pet e campanhas.
 - Etiquetas de clientes: VIP, recorrente, em risco, novo.
