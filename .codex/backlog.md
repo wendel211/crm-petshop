@@ -4,14 +4,14 @@
 
 - Painel operacional inicial com agenda, clientes e oportunidades.
 - Central inicial de lembretes WhatsApp com mensagens prontas para confirmacao de agenda e recuperacao de retorno.
+- Cadastro local de clientes e pets com formulario funcional, persistencia no navegador e listagem responsiva.
 
 ## Agora
 
-- Criar formularios funcionais para clientes, pets e agenda.
+- Evoluir o cadastro local para persistencia real em PostgreSQL/Prisma.
+- Criar formulario funcional de agenda.
 - Implementar persistencia inicial com PostgreSQL e Prisma.
 - Modelar entidades principais: empresa, usuario, cliente, pet, atendimento, agendamento, produto e venda.
-- Criar cadastro de clientes.
-- Criar cadastro de pets vinculado ao cliente.
 - Criar agenda de banho, tosa, consulta e vacina.
 - Criar historico de interacoes com cliente.
 
@@ -39,6 +39,7 @@
 ## Proximas features comerciais
 
 - Transformar lembretes WhatsApp mockados em fluxo com dados reais.
+- Transformar o cadastro local em base compartilhada por empresa.
 - Controle de recompra de racao.
 - Aniversario do pet e campanhas.
 - Etiquetas de clientes: VIP, recorrente, em risco, novo.
