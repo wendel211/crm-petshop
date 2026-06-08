@@ -25,7 +25,10 @@
 ### Publicacao
 
 - Branch local criada: `feat/cadastro-cliente-local`.
-- PR sera empilhado sobre `feat/lembretes-whatsapp` para evitar misturar esta entrega com `main` antes do merge do ciclo anterior.
+- Branch remota publicada: `origin/feat/cadastro-cliente-local`.
+- PR criado sobre `feat/lembretes-whatsapp`: `https://github.com/wendel211/crm-petshop/pull/4`.
+- Labels aplicados: `codex` e `codex-automation`.
+- Aprovacao automatica tentada, mas bloqueada pelo GitHub com `Review Can not approve your own pull request`.
 
 ### Proximo ciclo
 
