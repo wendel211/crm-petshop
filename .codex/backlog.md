@@ -8,12 +8,33 @@
 ## Agora
 
 - Criar formularios funcionais para clientes, pets e agenda.
-- Definir persistencia inicial do MVP.
+- Implementar persistencia inicial com PostgreSQL e Prisma.
 - Modelar entidades principais: empresa, usuario, cliente, pet, atendimento, agendamento, produto e venda.
 - Criar cadastro de clientes.
 - Criar cadastro de pets vinculado ao cliente.
 - Criar agenda de banho, tosa, consulta e vacina.
 - Criar historico de interacoes com cliente.
+
+## Arquitetura de dados
+
+- Banco oficial: PostgreSQL.
+- ORM/migrations: Prisma.
+- Provedores recomendados para MVP: Neon Postgres ou Supabase Postgres.
+- Padrao SaaS: todas as entidades de negocio devem carregar `companyId` para multiempresa.
+- Evitar SQLite/Firebase como base principal, porque o produto tem relacoes fortes entre cliente, pet, agenda, venda, recompra e lembretes.
+
+### Entidades iniciais PostgreSQL
+
+- companies: empresa contratante do sistema.
+- users: usuarios vinculados a uma empresa.
+- customers: tutores/clientes.
+- pets: animais vinculados ao tutor.
+- services: servicos como banho, tosa, consulta e vacina.
+- appointments: agendamentos.
+- products: produtos relevantes para recompra.
+- sales: vendas e compras historicas.
+- interactions: historico de contato e atendimento.
+- reminders: lembretes de retorno, vacina, recompra e campanhas.
 
 ## Proximas features comerciais
 

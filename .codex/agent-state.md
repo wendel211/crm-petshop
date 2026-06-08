@@ -25,7 +25,7 @@ Ultimo ciclo executado em 2026-06-07:
 
 Ainda pendente:
 - Evoluir a primeira versao funcional com formularios reais.
-- Adicionar persistencia de dados.
+- Adicionar persistencia de dados com PostgreSQL e Prisma.
 - Configurar testes automatizados alem de lint/build.
 
 ## Preferencia atual de ciclo
@@ -34,7 +34,7 @@ Executar diariamente as 09:00 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar formulario funcional de novo cliente com pet vinculado, ainda em persistencia local simples antes de escolher banco.
+Criar formulario funcional de novo cliente com pet vinculado e preparar schema PostgreSQL/Prisma para persistencia real.
 
 ## Preferencia de publicacao
 
