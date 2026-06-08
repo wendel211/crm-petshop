@@ -23,8 +23,14 @@ Ultimo ciclo executado em 2026-06-07:
 - Data do painel passou a ser dinamica para a operacao do dia.
 - Build ajustado para ambiente Windows/Codex: fontes locais, `typecheck` explicito e workers do Next via threads com `cpus: 1`.
 
+Ultimo ciclo executado em 2026-06-08:
+- Botao `Novo cliente` evoluido para formulario funcional de tutor e pet.
+- Cadastro salvo em `localStorage` com leitura estavel via `useSyncExternalStore`.
+- Tabela de clientes virou lista em cards no mobile para remover overflow horizontal.
+- Persistencia local validada em recarga e verificacao visual desktop/mobile sem erros novos de console.
+
 Ainda pendente:
-- Evoluir a primeira versao funcional com formularios reais.
+- Evoluir a primeira versao funcional com agenda real.
 - Adicionar persistencia de dados com PostgreSQL e Prisma.
 - Configurar testes automatizados alem de lint/build.
 
@@ -34,7 +40,7 @@ Executar diariamente as 09:00 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar formulario funcional de novo cliente com pet vinculado e preparar schema PostgreSQL/Prisma para persistencia real.
+Preparar schema Prisma/PostgreSQL e trocar o cadastro local por persistencia real multiempresa.
 
 ## Preferencia de publicacao
 

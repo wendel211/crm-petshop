@@ -1,5 +1,40 @@
 # Relatorio Diario
 
+## 2026-06-08
+
+### Ciclo automatizado - 10:47 BRT
+
+### Feito
+
+- Botao `Novo cliente` passou a abrir um formulario funcional para tutor e pet.
+- Adicionado cadastro local com `localStorage`, incluindo tutor, WhatsApp, pet, especie, bairro e etiqueta comercial.
+- Lista de clientes recentes passou a incorporar os cadastros locais do turno.
+- Corrigida a hidracao do React usando `useSyncExternalStore` com cache de snapshot para leitura estavel do navegador.
+- Corrigido o mobile com cards de clientes em vez de tabela, removendo overflow horizontal em 390x844.
+- `src/app/page.tsx` foi reduzido para casca da rota e a interface foi movida para `src/app/home-dashboard.tsx`.
+
+### Validacao
+
+- `npm run lint` executado com sucesso.
+- `npm run typecheck` executado com sucesso.
+- `npm run build` executado com sucesso.
+- Verificacao visual em desktop confirmou carregamento da dashboard e do fluxo de cadastro.
+- Verificacao funcional no navegador confirmou persistencia local do cadastro apos recarga.
+- Verificacao mobile em 390x844 confirmou cards de clientes, ausencia de overflow horizontal e console sem erros novos.
+
+### Publicacao
+
+- Branch local criada: `feat/cadastro-cliente-local`.
+- Branch remota publicada: `origin/feat/cadastro-cliente-local`.
+- PR criado sobre `feat/lembretes-whatsapp`: `https://github.com/wendel211/crm-petshop/pull/4`.
+- Labels aplicados: `codex` e `codex-automation`.
+- Aprovacao automatica tentada, mas bloqueada pelo GitHub com `Review Can not approve your own pull request`.
+
+### Proximo ciclo
+
+- Adicionar Prisma e schema inicial para substituir a persistencia local por base real.
+- Criar o primeiro formulario funcional de agenda.
+
 ## 2026-06-07
 
 ### Ciclo automatizado - 10:21 BRT
