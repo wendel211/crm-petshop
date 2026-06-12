@@ -23,7 +23,9 @@
 ### Publicacao
 
 - Branch local criada: `feat/agendamento-local`.
-- PR sera criado apos commit e push desta entrega.
+- Branch remota publicada: `origin/feat/agendamento-local`.
+- PR criado sobre `main`: `https://github.com/wendel211/crm-petshop/pull/6`.
+- Labels aplicados: `codex` e `codex-automation`.
 
 ### Proximo ciclo
 
