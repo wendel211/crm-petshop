@@ -26,6 +26,7 @@
 - Branch remota publicada: `origin/feat/agendamento-local`.
 - PR criado sobre `main`: `https://github.com/wendel211/crm-petshop/pull/6`.
 - Labels aplicados: `codex` e `codex-automation`.
+- Aprovacao automatica tentada, mas bloqueada pelo GitHub com `Review Can not approve your own pull request`.
 
 ### Proximo ciclo
 
