@@ -1,5 +1,37 @@
 # Relatorio Diario
 
+## 2026-06-12
+
+### Ciclo automatizado - 15:44 BRT
+
+### Feito
+
+- Botao `Agendar servico` passou a abrir um formulario funcional para agenda do dia.
+- Adicionado cadastro local de agendamentos com horario, tutor, WhatsApp, pet, servico, situacao e observacao.
+- Agenda de hoje passou a incorporar agendamentos salvos no navegador junto com registros demonstrativos.
+- Metrica `Agendamentos hoje` agora reflete a agenda visivel e mostra quantos itens precisam de confirmacao.
+- Cada item da agenda recebeu atalho `Confirmar WhatsApp` com mensagem pronta para validar o horario com o tutor.
+
+### Validacao
+
+- `npm run lint` executado com sucesso.
+- `npm run typecheck` executado com sucesso.
+- `npm run build` executado com sucesso.
+- Servidor local respondeu HTTP 200 em `http://127.0.0.1:3000`.
+- Verificacao visual automatizada nao foi concluida: `agent-browser` nao estava no PATH, `playwirth/browser_navigate` expirou e o Node REPL nao tinha `playwright` instalado.
+
+### Publicacao
+
+- Branch local criada: `feat/agendamento-local`.
+- Branch remota publicada: `origin/feat/agendamento-local`.
+- PR criado sobre `main`: `https://github.com/wendel211/crm-petshop/pull/6`.
+- Labels aplicados: `codex` e `codex-automation`.
+- Aprovacao automatica tentada, mas bloqueada pelo GitHub com `Review Can not approve your own pull request`.
+
+### Proximo ciclo
+
+- Adicionar Prisma e schema inicial para persistir clientes, pets e agendamentos em PostgreSQL com `companyId`.
+
 ## 2026-06-08
 
 ### Ciclo automatizado - 10:47 BRT
