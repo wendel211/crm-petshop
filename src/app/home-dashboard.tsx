@@ -4,7 +4,10 @@ import { useState, useSyncExternalStore, useTransition } from "react";
 
 const STORAGE_KEY = "crm-pet-feira-customers-v1";
 const STORAGE_EVENT = "crm-pet-feira-customers-changed";
+const APPOINTMENTS_STORAGE_KEY = "crm-pet-feira-appointments-v1";
+const APPOINTMENTS_STORAGE_EVENT = "crm-pet-feira-appointments-changed";
 const emptyCustomers: CustomerRecord[] = [];
+const emptyAppointments: AppointmentRecord[] = [];
 
 let storedCustomersCache: {
   parsed: CustomerRecord[];
@@ -12,6 +15,26 @@ let storedCustomersCache: {
 } = {
   parsed: emptyCustomers,
   raw: null,
+};
+
+let storedAppointmentsCache: {
+  parsed: AppointmentRecord[];
+  raw: null | string;
+} = {
+  parsed: emptyAppointments,
+  raw: null,
+};
+
+type AppointmentRecord = {
+  id: string;
+  time: string;
+  pet: string;
+  service: string;
+  tutor: string;
+  phone: string;
+  status: string;
+  note: string;
+  createdAt: string;
 };
 
 type CustomerRecord = {
@@ -34,6 +57,16 @@ type CustomerFormState = {
   tag: string;
 };
 
+type AppointmentFormState = {
+  time: string;
+  tutor: string;
+  phone: string;
+  pet: string;
+  service: string;
+  status: string;
+  note: string;
+};
+
 const initialFormState: CustomerFormState = {
   name: "",
   phone: "",
@@ -43,41 +76,60 @@ const initialFormState: CustomerFormState = {
   tag: "Novo",
 };
 
-const metrics = [
-  { label: "Agendamentos hoje", value: "18", detail: "6 banho e tosa em aberto" },
-  { label: "Clientes ativos", value: "342", detail: "28 novos nos ultimos 30 dias" },
-  { label: "Retornos previstos", value: "41", detail: "Racao, vacina e revisao" },
-  { label: "Oportunidades", value: "R$ 4,8 mil", detail: "Recompras mapeadas" },
-];
+const initialAppointmentFormState: AppointmentFormState = {
+  time: "",
+  tutor: "",
+  phone: "",
+  pet: "",
+  service: "Banho",
+  status: "Lembrar",
+  note: "",
+};
 
-const appointments = [
+const defaultAppointments: AppointmentRecord[] = [
   {
+    id: "demo-agenda-luna",
     time: "08:30",
     pet: "Luna",
     service: "Banho e tosa",
     tutor: "Mariana Alves",
+    phone: "(75) 99124-8821",
     status: "Confirmado",
+    note: "Cliente VIP, deixar finalizada ate 11:00.",
+    createdAt: "2026-06-07T08:15:00.000Z",
   },
   {
+    id: "demo-agenda-thor",
     time: "10:00",
     pet: "Thor",
     service: "Vacina V10",
     tutor: "Joao Pereira",
+    phone: "(75) 98802-1193",
     status: "Lembrar",
+    note: "Confirmar carteira antes do atendimento.",
+    createdAt: "2026-06-07T08:45:00.000Z",
   },
   {
+    id: "demo-agenda-mel",
     time: "14:20",
     pet: "Mel",
     service: "Retorno clinico",
     tutor: "Carla Souza",
+    phone: "(75) 99744-3308",
     status: "Pendente",
+    note: "Retorno atrasado desde ontem.",
+    createdAt: "2026-06-06T14:20:00.000Z",
   },
   {
+    id: "demo-agenda-bob",
     time: "16:00",
     pet: "Bob",
     service: "Tosa higienica",
     tutor: "Rafael Lima",
+    phone: "(75) 98116-7520",
     status: "Confirmado",
+    note: "Tutor busca no fim da tarde.",
+    createdAt: "2026-06-06T16:05:00.000Z",
   },
 ];
 
@@ -207,6 +259,10 @@ function buildWhatsappLink(phone: string, message: string) {
   return `https://wa.me/${target}?text=${encodedMessage}`;
 }
 
+function buildAppointmentMessage(appointment: AppointmentRecord) {
+  return `Oi, ${appointment.tutor}! Passando para confirmar ${appointment.service.toLowerCase()} do ${appointment.pet} hoje as ${appointment.time}. Posso manter esse horario?`;
+}
+
 function isCustomerRecord(value: unknown): value is CustomerRecord {
   if (typeof value !== "object" || value === null) {
     return false;
@@ -222,6 +278,26 @@ function isCustomerRecord(value: unknown): value is CustomerRecord {
     typeof candidate.tag === "string" &&
     typeof candidate.species === "string" &&
     typeof candidate.neighborhood === "string" &&
+    typeof candidate.createdAt === "string"
+  );
+}
+
+function isAppointmentRecord(value: unknown): value is AppointmentRecord {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+
+  return (
+    typeof candidate.id === "string" &&
+    typeof candidate.time === "string" &&
+    typeof candidate.pet === "string" &&
+    typeof candidate.service === "string" &&
+    typeof candidate.tutor === "string" &&
+    typeof candidate.phone === "string" &&
+    typeof candidate.status === "string" &&
+    typeof candidate.note === "string" &&
     typeof candidate.createdAt === "string"
   );
 }
@@ -268,6 +344,48 @@ function loadStoredCustomers() {
   }
 }
 
+function loadStoredAppointments() {
+  if (typeof window === "undefined") {
+    return emptyAppointments;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(APPOINTMENTS_STORAGE_KEY);
+
+    if (raw === storedAppointmentsCache.raw) {
+      return storedAppointmentsCache.parsed;
+    }
+
+    if (!raw) {
+      storedAppointmentsCache = {
+        parsed: emptyAppointments,
+        raw: null,
+      };
+
+      return storedAppointmentsCache.parsed;
+    }
+
+    const parsed = JSON.parse(raw);
+    const nextParsed = Array.isArray(parsed)
+      ? parsed.filter(isAppointmentRecord)
+      : emptyAppointments;
+
+    storedAppointmentsCache = {
+      parsed: nextParsed,
+      raw,
+    };
+
+    return storedAppointmentsCache.parsed;
+  } catch {
+    storedAppointmentsCache = {
+      parsed: emptyAppointments,
+      raw: null,
+    };
+
+    return storedAppointmentsCache.parsed;
+  }
+}
+
 function subscribeToStoredCustomers(onChange: () => void) {
   if (typeof window === "undefined") {
     return () => undefined;
@@ -281,6 +399,22 @@ function subscribeToStoredCustomers(onChange: () => void) {
   return () => {
     window.removeEventListener("storage", handleStorageChange);
     window.removeEventListener(STORAGE_EVENT, handleStorageChange);
+  };
+}
+
+function subscribeToStoredAppointments(onChange: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  const handleStorageChange = () => onChange();
+
+  window.addEventListener("storage", handleStorageChange);
+  window.addEventListener(APPOINTMENTS_STORAGE_EVENT, handleStorageChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorageChange);
+    window.removeEventListener(APPOINTMENTS_STORAGE_EVENT, handleStorageChange);
   };
 }
 
@@ -298,6 +432,22 @@ function saveStoredCustomers(customers: CustomerRecord[]) {
 
   window.localStorage.setItem(STORAGE_KEY, raw);
   window.dispatchEvent(new Event(STORAGE_EVENT));
+}
+
+function saveStoredAppointments(appointments: AppointmentRecord[]) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const raw = JSON.stringify(appointments);
+
+  storedAppointmentsCache = {
+    parsed: appointments,
+    raw,
+  };
+
+  window.localStorage.setItem(APPOINTMENTS_STORAGE_KEY, raw);
+  window.dispatchEvent(new Event(APPOINTMENTS_STORAGE_EVENT));
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -321,11 +471,25 @@ export default function HomeDashboard() {
     loadStoredCustomers,
     () => emptyCustomers,
   );
+  const savedAppointments = useSyncExternalStore(
+    subscribeToStoredAppointments,
+    loadStoredAppointments,
+    () => emptyAppointments,
+  );
   const [form, setForm] = useState<CustomerFormState>(initialFormState);
+  const [appointmentForm, setAppointmentForm] = useState<AppointmentFormState>(
+    initialAppointmentFormState,
+  );
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [appointmentFeedback, setAppointmentFeedback] = useState<string | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
+  const [appointmentError, setAppointmentError] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isAppointmentFormOpen, setIsAppointmentFormOpen] = useState(false);
   const [isSaving, startSaving] = useTransition();
+  const [isSavingAppointment, startSavingAppointment] = useTransition();
 
   const todayLabel = new Intl.DateTimeFormat("pt-BR", {
     weekday: "long",
@@ -336,6 +500,29 @@ export default function HomeDashboard() {
   const visibleCustomers = [...savedCustomers, ...defaultCustomers]
     .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
     .slice(0, 8);
+
+  const visibleAppointments = [...savedAppointments, ...defaultAppointments]
+    .sort((left, right) => left.time.localeCompare(right.time))
+    .slice(0, 10);
+
+  const pendingAppointments = visibleAppointments.filter(
+    (appointment) => appointment.status !== "Confirmado",
+  ).length;
+
+  const dashboardMetrics = [
+    {
+      label: "Agendamentos hoje",
+      value: `${visibleAppointments.length}`,
+      detail: `${pendingAppointments} precisam de confirmacao`,
+    },
+    {
+      label: "Clientes ativos",
+      value: `${342 + savedCustomers.length}`,
+      detail: `${savedCustomers.length} novos neste navegador`,
+    },
+    { label: "Retornos previstos", value: "41", detail: "Racao, vacina e revisao" },
+    { label: "Oportunidades", value: "R$ 4,8 mil", detail: "Recompras mapeadas" },
+  ];
 
   function handleCreateCustomer(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -375,6 +562,62 @@ export default function HomeDashboard() {
 
   function handleFormChange(field: keyof CustomerFormState, value: string) {
     setForm((current) => ({
+      ...current,
+      [field]: field === "phone" ? formatPhone(value) : value,
+    }));
+  }
+
+  function handleCreateAppointment(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setAppointmentFeedback(null);
+    setAppointmentError(null);
+
+    const digits = appointmentForm.phone.replace(/\D/g, "");
+
+    if (
+      !appointmentForm.time ||
+      !appointmentForm.tutor ||
+      !appointmentForm.pet ||
+      digits.length < 10
+    ) {
+      setAppointmentError(
+        "Preencha horario, tutor, WhatsApp e pet para salvar o agendamento.",
+      );
+      return;
+    }
+
+    const nextAppointment: AppointmentRecord = {
+      id:
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : `${Date.now()}`,
+      time: appointmentForm.time,
+      pet: appointmentForm.pet.trim(),
+      service: appointmentForm.service,
+      tutor: appointmentForm.tutor.trim(),
+      phone: formatPhone(appointmentForm.phone),
+      status: appointmentForm.status,
+      note: appointmentForm.note.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    const nextAppointments = [nextAppointment, ...savedAppointments].slice(0, 16);
+    saveStoredAppointments(nextAppointments);
+
+    startSavingAppointment(() => {
+      setAppointmentForm(initialAppointmentFormState);
+      setIsAppointmentFormOpen(false);
+      setAppointmentFeedback(
+        `Agendamento salvo: ${nextAppointment.pet} as ${nextAppointment.time}.`,
+      );
+    });
+  }
+
+  function handleAppointmentFormChange(
+    field: keyof AppointmentFormState,
+    value: string,
+  ) {
+    setAppointmentForm((current) => ({
       ...current,
       [field]: field === "phone" ? formatPhone(value) : value,
     }));
@@ -436,14 +679,22 @@ export default function HomeDashboard() {
               >
                 {isFormOpen ? "Fechar cadastro" : "Novo cliente"}
               </button>
-              <button className="rounded-md bg-[#2f6f5e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#285f51]">
-                Agendar servico
+              <button
+                className="rounded-md bg-[#2f6f5e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#285f51]"
+                onClick={() => {
+                  setAppointmentFeedback(null);
+                  setAppointmentError(null);
+                  setIsAppointmentFormOpen((current) => !current);
+                }}
+                type="button"
+              >
+                {isAppointmentFormOpen ? "Fechar agenda" : "Agendar servico"}
               </button>
             </div>
           </header>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {metrics.map((metric) => (
+            {dashboardMetrics.map((metric) => (
               <div
                 key={metric.label}
                 className="rounded-lg border border-[#ded8ca] bg-white p-4"
@@ -459,12 +710,14 @@ export default function HomeDashboard() {
             <section className="rounded-lg border border-[#ded8ca] bg-white">
               <div className="flex items-center justify-between border-b border-[#ebe6dc] px-4 py-4">
                 <h3 className="text-base font-semibold">Agenda de hoje</h3>
-                <span className="text-sm text-[#60725a]">18 servicos</span>
+                <span className="text-sm text-[#60725a]">
+                  {visibleAppointments.length} servicos
+                </span>
               </div>
               <div className="divide-y divide-[#ebe6dc]">
-                {appointments.map((appointment) => (
+                {visibleAppointments.map((appointment) => (
                   <div
-                    key={`${appointment.time}-${appointment.pet}`}
+                    key={appointment.id}
                     className="grid gap-3 px-4 py-4 md:grid-cols-[72px_1fr_auto]"
                   >
                     <span className="font-mono text-sm text-[#60725a]">
@@ -477,8 +730,26 @@ export default function HomeDashboard() {
                       <p className="mt-1 text-sm text-[#6e746a]">
                         Tutor: {appointment.tutor}
                       </p>
+                      {appointment.note ? (
+                        <p className="mt-2 text-sm text-[#60725a]">
+                          {appointment.note}
+                        </p>
+                      ) : null}
                     </div>
-                    <StatusBadge status={appointment.status} />
+                    <div className="flex flex-col items-start gap-2 md:items-end">
+                      <StatusBadge status={appointment.status} />
+                      <a
+                        className="inline-flex items-center justify-center rounded-md border border-[#c7c0b2] px-3 py-2 text-sm font-medium text-[#2f6f5e] transition hover:bg-[#edf4ec]"
+                        href={buildWhatsappLink(
+                          appointment.phone,
+                          buildAppointmentMessage(appointment),
+                        )}
+                        rel="noreferrer"
+                        target="_blank"
+                      >
+                        Confirmar WhatsApp
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -503,6 +774,154 @@ export default function HomeDashboard() {
               </div>
             </section>
           </div>
+
+          {isAppointmentFormOpen ? (
+            <section
+              className="mt-6 rounded-lg border border-[#ded8ca] bg-white"
+              id="agendamento-servico"
+            >
+              <div className="flex flex-col gap-2 border-b border-[#ebe6dc] px-4 py-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h3 className="text-base font-semibold">
+                    Agendamento rapido de servico
+                  </h3>
+                  <p className="mt-1 text-sm text-[#60725a]">
+                    Registre banho, tosa, consulta ou vacina para o turno de hoje.
+                  </p>
+                </div>
+                <span className="rounded-full bg-[#edf4ec] px-3 py-1 text-xs font-semibold text-[#2f6f5e]">
+                  {savedAppointments.length} salvos neste navegador
+                </span>
+              </div>
+
+              <form
+                className="grid gap-4 p-4 md:grid-cols-2 xl:grid-cols-4"
+                onSubmit={handleCreateAppointment}
+              >
+                <label className="grid gap-2 text-sm">
+                  Horario
+                  <input
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("time", event.target.value)
+                    }
+                    type="time"
+                    value={appointmentForm.time}
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  Servico
+                  <select
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("service", event.target.value)
+                    }
+                    value={appointmentForm.service}
+                  >
+                    <option value="Banho">Banho</option>
+                    <option value="Banho e tosa">Banho e tosa</option>
+                    <option value="Tosa higienica">Tosa higienica</option>
+                    <option value="Consulta">Consulta</option>
+                    <option value="Vacina">Vacina</option>
+                    <option value="Retorno clinico">Retorno clinico</option>
+                  </select>
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  Tutor responsavel
+                  <input
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("tutor", event.target.value)
+                    }
+                    placeholder="Ex.: Ana Oliveira"
+                    value={appointmentForm.tutor}
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  WhatsApp
+                  <input
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    inputMode="numeric"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("phone", event.target.value)
+                    }
+                    placeholder="(75) 99999-0000"
+                    value={appointmentForm.phone}
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  Nome do pet
+                  <input
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("pet", event.target.value)
+                    }
+                    placeholder="Ex.: Nina"
+                    value={appointmentForm.pet}
+                  />
+                </label>
+
+                <label className="grid gap-2 text-sm">
+                  Situacao
+                  <select
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("status", event.target.value)
+                    }
+                    value={appointmentForm.status}
+                  >
+                    <option value="Lembrar">Lembrar</option>
+                    <option value="Confirmado">Confirmado</option>
+                    <option value="Pendente">Pendente</option>
+                  </select>
+                </label>
+
+                <label className="grid gap-2 text-sm md:col-span-2">
+                  Observacao do atendimento
+                  <input
+                    className="rounded-md border border-[#d7d0c2] bg-[#fcfbf8] px-3 py-2 outline-none transition focus:border-[#2f6f5e] focus:bg-white"
+                    onChange={(event) =>
+                      handleAppointmentFormChange("note", event.target.value)
+                    }
+                    placeholder="Ex.: tutor busca as 17:00"
+                    value={appointmentForm.note}
+                  />
+                </label>
+
+                <div className="md:col-span-2 xl:col-span-4">
+                  {appointmentError ? (
+                    <p className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+                      {appointmentError}
+                    </p>
+                  ) : null}
+
+                  {appointmentFeedback ? (
+                    <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                      {appointmentFeedback}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="flex flex-col gap-3 md:col-span-2 md:flex-row md:items-center xl:col-span-4">
+                  <button
+                    className="inline-flex items-center justify-center rounded-md bg-[#2f6f5e] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#285f51] disabled:cursor-not-allowed disabled:bg-[#6c9187]"
+                    disabled={isSavingAppointment}
+                    type="submit"
+                  >
+                    {isSavingAppointment ? "Salvando..." : "Salvar agendamento"}
+                  </button>
+                  <p className="text-sm text-[#60725a]">
+                    O servico entra na agenda de hoje e fica salvo neste
+                    navegador.
+                  </p>
+                </div>
+              </form>
+            </section>
+          ) : null}
 
           {isFormOpen ? (
             <section
