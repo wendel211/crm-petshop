@@ -1,5 +1,37 @@
 # Relatorio Diario
 
+## 2026-06-13
+
+### Ciclo automatizado - 21:45 BRT
+
+### Feito
+
+- Adicionado Prisma 7 ao projeto com PostgreSQL como banco oficial.
+- Criado schema inicial multiempresa em `prisma/schema.prisma`.
+- Modeladas as entidades principais do CRM: empresa, usuarios, tutores, pets, servicos, agenda, produtos, vendas, historico de interacoes e lembretes.
+- Adicionados scripts `db:validate`, `db:generate` e `db:migrate`.
+- Adicionado `.env.example` com exemplo de `DATABASE_URL`.
+- Client Prisma gerado localmente e ignorado no Git por ser artefato regeneravel.
+
+### Validacao
+
+- `npm run db:validate` executado com sucesso.
+- `npm run db:generate` executado com sucesso.
+- `npm run lint` executado com sucesso.
+- `npm run typecheck` executado com sucesso.
+- `npm run build` executado com sucesso.
+- Verificacao visual nao se aplica diretamente, pois a entrega e de schema/configuracao sem mudanca de interface.
+
+### Publicacao
+
+- Branch local criada: `feat/prisma-schema-inicial`.
+- Publicacao e PR pendentes neste ponto do ciclo.
+
+### Proximo ciclo
+
+- Criar migration inicial e seed demonstrativo para uma empresa de Feira de Santana.
+- Depois conectar cadastro e agenda ao banco real.
+
 ## 2026-06-12
 
 ### Ciclo automatizado - 15:44 BRT

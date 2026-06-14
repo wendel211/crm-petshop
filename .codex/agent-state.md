@@ -38,9 +38,17 @@ Ultimo ciclo executado em 2026-06-12:
 - Servidor local respondeu HTTP 200 em `http://127.0.0.1:3000`.
 - Verificacao visual automatizada ficou limitada: `agent-browser` nao estava disponivel no PATH, `playwirth/browser_navigate` expirou e o Node REPL nao tinha `playwright` instalado.
 
+Ultimo ciclo executado em 2026-06-13:
+- Adicionado Prisma 7 com PostgreSQL como datasource.
+- Criado `prisma/schema.prisma` com entidades multiempresa: Company, User, Customer, Pet, Service, Appointment, Product, Sale, SaleItem, Interaction e Reminder.
+- Todas as entidades de negocio carregam `companyId` para preparar o SaaS multiempresa.
+- Adicionados scripts `db:validate`, `db:generate` e `db:migrate`.
+- Adicionado `.env.example` para orientar `DATABASE_URL` local.
+
 Ainda pendente:
 - Evoluir a agenda local para banco real.
-- Adicionar persistencia de dados com PostgreSQL e Prisma.
+- Criar migration inicial e seed demonstrativo em PostgreSQL.
+- Conectar cadastro, agenda e lembretes ao banco.
 - Configurar testes automatizados alem de lint/build.
 
 ## Preferencia atual de ciclo
@@ -49,7 +57,7 @@ Executar diariamente as 09:00 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Preparar schema Prisma/PostgreSQL e trocar cadastro e agenda locais por persistencia real multiempresa.
+Criar migration inicial, seed demonstrativo de pet shop em Feira de Santana e preparar as primeiras rotas server-side para cadastro e agenda.
 
 ## Preferencia de publicacao
 
