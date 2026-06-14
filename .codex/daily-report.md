@@ -25,7 +25,9 @@
 ### Publicacao
 
 - Branch local criada: `feat/prisma-schema-inicial`.
-- Publicacao e PR pendentes neste ponto do ciclo.
+- Branch remota publicada: `origin/feat/prisma-schema-inicial`.
+- PR criado sobre `main`: `https://github.com/wendel211/crm-petshop/pull/7`.
+- Labels aplicados: `codex` e `codex-automation`.
 
 ### Proximo ciclo
 
