@@ -6,13 +6,13 @@
 - Central inicial de lembretes WhatsApp com mensagens prontas para confirmacao de agenda e recuperacao de retorno.
 - Cadastro local de clientes e pets com formulario funcional, persistencia no navegador e listagem responsiva.
 - Agendamento local de servicos com formulario funcional, persistencia no navegador e atalho de confirmacao por WhatsApp.
+- Schema inicial Prisma/PostgreSQL com entidades multiempresa para clientes, pets, agenda, vendas, interacoes e lembretes.
 
 ## Agora
 
 - Evoluir o cadastro local para persistencia real em PostgreSQL/Prisma.
 - Evoluir o agendamento local para persistencia real em PostgreSQL/Prisma.
-- Implementar persistencia inicial com PostgreSQL e Prisma.
-- Modelar entidades principais: empresa, usuario, cliente, pet, atendimento, agendamento, produto e venda.
+- Criar migration inicial e seed demonstrativo para uma empresa de Feira de Santana.
 - Criar agenda de banho, tosa, consulta e vacina.
 - Criar historico de interacoes com cliente.
 
@@ -36,6 +36,13 @@
 - sales: vendas e compras historicas.
 - interactions: historico de contato e atendimento.
 - reminders: lembretes de retorno, vacina, recompra e campanhas.
+
+### Base Prisma criada
+
+- `prisma/schema.prisma` define o schema inicial com `companyId` nas entidades de negocio.
+- `prisma.config.ts` carrega `DATABASE_URL` via `.env`.
+- Scripts disponiveis: `npm run db:validate`, `npm run db:generate` e `npm run db:migrate`.
+- `.env.example` documenta uma URL PostgreSQL local para desenvolvimento.
 
 ## Proximas features comerciais
 

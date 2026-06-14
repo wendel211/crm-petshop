@@ -10,6 +10,7 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 - TypeScript.
 - Tailwind CSS.
 - ESLint.
+- Prisma 7.
 
 ## Banco de dados
 
@@ -17,6 +18,7 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 - ORM/migrations: Prisma.
 - Provedor recomendado para MVP: Neon Postgres ou Supabase Postgres.
 - Modelo SaaS: usar `companyId` nas entidades de negocio para permitir multiempresa.
+- Configuracao: `prisma.config.ts` le `DATABASE_URL`; `.env.example` documenta a conexao local.
 
 ## Entidades principais
 
@@ -34,13 +36,13 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 ## Roadmap tecnico sugerido
 
 1. Evoluir formularios de cliente, pet e agenda.
-2. Adicionar Prisma e schema PostgreSQL.
-3. Criar migrations iniciais.
+2. Criar migrations iniciais.
+3. Adicionar seed demonstrativo.
 4. Conectar formularios ao banco.
 5. Implementar listagens reais.
 6. Criar lembretes baseados em dados reais.
 7. Adicionar autenticacao.
-8. Preparar multiempresa.
+8. Preparar permissoes por perfil.
 
 ## Criterios de uma boa feature diaria
 
