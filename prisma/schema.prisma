@@ -1,0 +1,277 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  OWNER
+  MANAGER
+  ATTENDANT
+}
+
+enum PetSpecies {
+  DOG
+  CAT
+  OTHER
+}
+
+enum AppointmentStatus {
+  PENDING_CONFIRMATION
+  CONFIRMED
+  COMPLETED
+  CANCELED
+  NO_SHOW
+}
+
+enum SaleStatus {
+  OPEN
+  PAID
+  CANCELED
+}
+
+enum InteractionChannel {
+  WHATSAPP
+  PHONE
+  IN_PERSON
+  SYSTEM
+}
+
+enum ReminderType {
+  APPOINTMENT_CONFIRMATION
+  VACCINE_RETURN
+  FOOD_REPURCHASE
+  MEDICATION_REPURCHASE
+  CLINICAL_RETURN
+  CAMPAIGN
+}
+
+enum ReminderStatus {
+  OPEN
+  SENT
+  SNOOZED
+  DONE
+  CANCELED
+}
+
+model Company {
+  id           String        @id @default(cuid())
+  name         String
+  tradeName    String?
+  document     String?       @unique
+  phone        String?
+  whatsapp     String?
+  city         String        @default("Feira de Santana")
+  state        String        @default("BA")
+  neighborhood String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  users        User[]
+  customers    Customer[]
+  pets         Pet[]
+  services     Service[]
+  appointments Appointment[]
+  products     Product[]
+  sales        Sale[]
+  interactions Interaction[]
+  reminders    Reminder[]
+
+  @@index([city, state])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  companyId String
+  name      String
+  email     String
+  role      UserRole @default(ATTENDANT)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, email])
+  @@index([companyId, role])
+}
+
+model Customer {
+  id           String        @id @default(cuid())
+  companyId    String
+  name         String
+  whatsapp     String
+  phone        String?
+  neighborhood String?
+  tags         String[]      @default([])
+  notes        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  pets         Pet[]
+  appointments Appointment[]
+  sales        Sale[]
+  interactions Interaction[]
+  reminders    Reminder[]
+
+  @@index([companyId, name])
+  @@index([companyId, whatsapp])
+}
+
+model Pet {
+  id           String        @id @default(cuid())
+  companyId    String
+  customerId   String
+  name         String
+  species      PetSpecies
+  breed        String?
+  birthDate    DateTime?
+  weightKg     Decimal?      @db.Decimal(5, 2)
+  notes        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  company      Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  customer     Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+  interactions Interaction[]
+  reminders    Reminder[]
+
+  @@index([companyId, customerId])
+  @@index([companyId, name])
+}
+
+model Service {
+  id              String        @id @default(cuid())
+  companyId       String
+  name            String
+  category        String
+  durationMinutes Int           @default(60)
+  price           Decimal?      @db.Decimal(10, 2)
+  active          Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  company         Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+
+  @@unique([companyId, name])
+  @@index([companyId, active])
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  companyId   String
+  customerId  String
+  petId       String
+  serviceId   String?
+  scheduledAt DateTime
+  status      AppointmentStatus @default(PENDING_CONFIRMATION)
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  company     Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  customer    Customer          @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  pet         Pet               @relation(fields: [petId], references: [id], onDelete: Restrict)
+  service     Service?          @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  reminders   Reminder[]
+
+  @@index([companyId, scheduledAt])
+  @@index([companyId, status])
+  @@index([customerId])
+  @@index([petId])
+}
+
+model Product {
+  id             String     @id @default(cuid())
+  companyId      String
+  name           String
+  category       String
+  sku            String?
+  repurchaseDays Int?
+  price          Decimal?   @db.Decimal(10, 2)
+  active         Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  company        Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  saleItems      SaleItem[]
+  reminders      Reminder[]
+
+  @@unique([companyId, sku])
+  @@index([companyId, category])
+  @@index([companyId, active])
+}
+
+model Sale {
+  id         String     @id @default(cuid())
+  companyId  String
+  customerId String
+  status     SaleStatus @default(PAID)
+  total      Decimal    @default(0) @db.Decimal(10, 2)
+  soldAt     DateTime   @default(now())
+  notes      String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  company    Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  customer   Customer   @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  items      SaleItem[]
+
+  @@index([companyId, soldAt])
+  @@index([companyId, customerId])
+}
+
+model SaleItem {
+  id        String   @id @default(cuid())
+  saleId    String
+  productId String?
+  name      String
+  quantity  Int      @default(1)
+  unitPrice Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([saleId])
+  @@index([productId])
+}
+
+model Interaction {
+  id         String             @id @default(cuid())
+  companyId  String
+  customerId String
+  petId      String?
+  channel    InteractionChannel @default(WHATSAPP)
+  summary    String
+  happenedAt DateTime           @default(now())
+  createdAt  DateTime           @default(now())
+  company    Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  customer   Customer           @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  pet        Pet?               @relation(fields: [petId], references: [id], onDelete: SetNull)
+
+  @@index([companyId, happenedAt])
+  @@index([companyId, customerId])
+}
+
+model Reminder {
+  id            String         @id @default(cuid())
+  companyId     String
+  customerId    String
+  petId         String?
+  appointmentId String?
+  productId     String?
+  type          ReminderType
+  status        ReminderStatus @default(OPEN)
+  dueAt         DateTime
+  message       String
+  sentAt        DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  company       Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  customer      Customer       @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  pet           Pet?           @relation(fields: [petId], references: [id], onDelete: SetNull)
+  appointment   Appointment?   @relation(fields: [appointmentId], references: [id], onDelete: SetNull)
+  product       Product?       @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([companyId, dueAt])
+  @@index([companyId, status])
+  @@index([customerId])
+}
