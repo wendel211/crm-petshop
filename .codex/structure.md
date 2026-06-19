@@ -19,6 +19,7 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 - Provedor recomendado para MVP: Neon Postgres ou Supabase Postgres.
 - Modelo SaaS: usar `companyId` nas entidades de negocio para permitir multiempresa.
 - Configuracao: `prisma.config.ts` le `DATABASE_URL`; `.env.example` documenta a conexao local.
+- Seed demonstrativo: `prisma/seed.ts` usa `@prisma/adapter-pg` e `tsx` para popular a empresa ficticia `Pet Feira Demo`.
 
 ## Entidades principais
 
@@ -37,12 +38,11 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 
 1. Evoluir formularios de cliente, pet e agenda.
 2. Criar migrations iniciais.
-3. Adicionar seed demonstrativo.
-4. Conectar formularios ao banco.
-5. Implementar listagens reais.
-6. Criar lembretes baseados em dados reais.
-7. Adicionar autenticacao.
-8. Preparar permissoes por perfil.
+3. Conectar formularios ao banco.
+4. Implementar listagens reais.
+5. Criar lembretes baseados em dados reais.
+6. Adicionar autenticacao.
+7. Preparar permissoes por perfil.
 
 ## Criterios de uma boa feature diaria
 
