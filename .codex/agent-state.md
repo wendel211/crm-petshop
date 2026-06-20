@@ -45,19 +45,31 @@ Ultimo ciclo executado em 2026-06-13:
 - Adicionados scripts `db:validate`, `db:generate` e `db:migrate`.
 - Adicionado `.env.example` para orientar `DATABASE_URL` local.
 
+Ultimo ciclo executado em 2026-06-19:
+- PR aberto para seed demonstrativo PostgreSQL em `https://github.com/wendel211/crm-petshop/pull/8`.
+- O PR adiciona base demonstrativa com empresa ficticia de Feira de Santana, tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes.
+- PR ainda estava aberto no inicio do ciclo de 2026-06-20.
+
+Ultimo ciclo executado em 2026-06-20:
+- Criada migration inicial em `prisma/migrations/20260620100600_initial_schema/migration.sql`.
+- Adicionado `prisma/migrations/migration_lock.toml` com provider PostgreSQL.
+- A migration foi gerada com `prisma migrate diff` a partir do schema Prisma atual, sem depender de PostgreSQL local.
+- SQL inclui enums, tabelas, indices, chaves unicas e relacionamentos para a base multiempresa.
+- Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
+
 Ainda pendente:
 - Evoluir a agenda local para banco real.
-- Criar migration inicial e seed demonstrativo em PostgreSQL.
+- Acompanhar merge do PR de seed demonstrativo.
 - Conectar cadastro, agenda e lembretes ao banco.
 - Configurar testes automatizados alem de lint/build.
 
 ## Preferencia atual de ciclo
 
-Executar diariamente as 09:00 no horario de Brasilia.
+Executar diariamente as 09:30 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar migration inicial, seed demonstrativo de pet shop em Feira de Santana e preparar as primeiras rotas server-side para cadastro e agenda.
+Preparar as primeiras rotas server-side para cadastro e agenda usando Prisma.
 
 ## Preferencia de publicacao
 
