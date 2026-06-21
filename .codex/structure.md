@@ -22,6 +22,8 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 - Seed demonstrativo: `prisma/seed.ts` usa `@prisma/adapter-pg` e `tsx` para popular a empresa ficticia `Pet Feira Demo`.
 - Migration inicial: `prisma/migrations/20260620100600_initial_schema/migration.sql`.
 - Lock de migrations: `prisma/migrations/migration_lock.toml` com provider PostgreSQL.
+- Cliente Prisma: `src/lib/prisma.ts` inicializa o Prisma Client de forma preguicosa para evitar falhas no `next build`.
+- Leituras server-side: `src/lib/crm-data.ts`, `/api/customers` e `/api/appointments`.
 
 ## Entidades principais
 
@@ -40,11 +42,12 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 
 1. Evoluir formularios de cliente, pet e agenda.
 2. Consolidar migrations iniciais e seed demonstrativo.
-3. Conectar formularios ao banco.
-4. Implementar listagens reais.
-5. Criar lembretes baseados em dados reais.
-6. Adicionar autenticacao.
-7. Preparar permissoes por perfil.
+3. Conectar dashboard aos endpoints reais com fallback local.
+4. Conectar formularios ao banco.
+5. Implementar listagens reais completas.
+6. Criar lembretes baseados em dados reais.
+7. Adicionar autenticacao.
+8. Preparar permissoes por perfil.
 
 ## Criterios de uma boa feature diaria
 

@@ -60,6 +60,13 @@ Ultimo ciclo executado em 2026-06-20:
 - SQL inclui enums, tabelas, indices, chaves unicas e relacionamentos para a base multiempresa.
 - Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
 
+Ultimo ciclo executado em 2026-06-21:
+- Criado `src/lib/prisma.ts` com inicializacao preguicosa do Prisma Client via `@prisma/adapter-pg`.
+- Criado `src/lib/crm-data.ts` com leituras server-side para clientes recentes e proximos agendamentos da empresa demonstrativa.
+- Criadas rotas GET `/api/customers` e `/api/appointments` para expor dados reais do PostgreSQL quando `DATABASE_URL` estiver configurado.
+- As rotas foram marcadas como dinamicas e retornam erro padronizado em portugues se o banco nao estiver acessivel.
+- Validacoes locais passaram: `npm run db:validate`, `npm run lint`, `npm run typecheck` e `npm run build`.
+
 Ainda pendente:
 - Evoluir a agenda local para banco real.
 - Conectar cadastro, agenda e lembretes ao banco.
@@ -71,7 +78,7 @@ Executar diariamente as 09:30 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Preparar as primeiras rotas server-side para cadastro e agenda usando Prisma.
+Conectar a dashboard aos endpoints `/api/customers` e `/api/appointments` com fallback local.
 
 ## Preferencia de publicacao
 

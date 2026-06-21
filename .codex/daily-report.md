@@ -1,5 +1,38 @@
 # Relatorio Diario
 
+## 2026-06-21
+
+### Ciclo automatizado - 10:22 BRT
+
+### Feito
+
+- Criado `src/lib/prisma.ts` com inicializacao preguicosa do Prisma Client usando `@prisma/adapter-pg`.
+- Criado `src/lib/crm-data.ts` com consultas server-side para clientes recentes e proximos agendamentos.
+- Criadas rotas GET `/api/customers` e `/api/appointments`.
+- Rotas retornam JSON com dados reais quando `DATABASE_URL` estiver configurado e erro padronizado em portugues quando o banco nao estiver acessivel.
+- Memoria operacional atualizada em `.codex/`.
+
+### Validacao
+
+- `npm run db:validate` executado com sucesso.
+- `npm run lint` executado com sucesso.
+- `npm run typecheck` executado com sucesso.
+- `npm run build` executado com sucesso.
+- Build confirmou as rotas `/api/customers` e `/api/appointments` como dinamicas.
+
+### Publicacao
+
+- Branch local criada: `feat/prisma-server-data`.
+- Branch remota publicada: `origin/feat/prisma-server-data`.
+- PR criado sobre `main`: `https://github.com/wendel211/crm-petshop/pull/10`.
+- Labels aplicados: `codex` e `codex-automation`.
+- Aprovacao automatica tentada, mas bloqueada pelo GitHub com `Review Can not approve your own pull request`.
+
+### Proximo ciclo
+
+- Conectar a dashboard aos endpoints reais com fallback local.
+- Depois migrar formularios de cliente e agenda para escrita via Prisma.
+
 ## 2026-06-20
 
 ### Ciclo automatizado - 10:06 BRT
