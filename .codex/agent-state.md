@@ -53,9 +53,15 @@ Ultimo ciclo executado em 2026-06-19:
 - Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
 - `npm run db:seed` nao foi executado neste ciclo porque depende de PostgreSQL acessivel em `DATABASE_URL`.
 
+Ultimo ciclo executado em 2026-06-20:
+- Criada migration inicial em `prisma/migrations/20260620100600_initial_schema/migration.sql`.
+- Adicionado `prisma/migrations/migration_lock.toml` com provider PostgreSQL.
+- A migration foi gerada com `prisma migrate diff` a partir do schema Prisma atual, sem depender de PostgreSQL local.
+- SQL inclui enums, tabelas, indices, chaves unicas e relacionamentos para a base multiempresa.
+- Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
+
 Ainda pendente:
 - Evoluir a agenda local para banco real.
-- Criar migration inicial em PostgreSQL.
 - Conectar cadastro, agenda e lembretes ao banco.
 - Configurar testes automatizados alem de lint/build.
 
@@ -65,7 +71,7 @@ Executar diariamente as 09:30 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar migration inicial em PostgreSQL e preparar as primeiras rotas server-side para cadastro e agenda.
+Preparar as primeiras rotas server-side para cadastro e agenda usando Prisma.
 
 ## Preferencia de publicacao
 

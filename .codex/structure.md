@@ -20,6 +20,8 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 - Modelo SaaS: usar `companyId` nas entidades de negocio para permitir multiempresa.
 - Configuracao: `prisma.config.ts` le `DATABASE_URL`; `.env.example` documenta a conexao local.
 - Seed demonstrativo: `prisma/seed.ts` usa `@prisma/adapter-pg` e `tsx` para popular a empresa ficticia `Pet Feira Demo`.
+- Migration inicial: `prisma/migrations/20260620100600_initial_schema/migration.sql`.
+- Lock de migrations: `prisma/migrations/migration_lock.toml` com provider PostgreSQL.
 
 ## Entidades principais
 
@@ -37,7 +39,7 @@ CRM Pet Feira e um SaaS vertical para pet shops, banho e tosa, clinicas veterina
 ## Roadmap tecnico sugerido
 
 1. Evoluir formularios de cliente, pet e agenda.
-2. Criar migrations iniciais.
+2. Consolidar migrations iniciais e seed demonstrativo.
 3. Conectar formularios ao banco.
 4. Implementar listagens reais.
 5. Criar lembretes baseados em dados reais.
