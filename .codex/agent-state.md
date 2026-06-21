@@ -46,9 +46,12 @@ Ultimo ciclo executado em 2026-06-13:
 - Adicionado `.env.example` para orientar `DATABASE_URL` local.
 
 Ultimo ciclo executado em 2026-06-19:
-- PR aberto para seed demonstrativo PostgreSQL em `https://github.com/wendel211/crm-petshop/pull/8`.
-- O PR adiciona base demonstrativa com empresa ficticia de Feira de Santana, tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes.
-- PR ainda estava aberto no inicio do ciclo de 2026-06-20.
+- Adicionado seed demonstrativo para uma empresa ficticia de Feira de Santana.
+- Seed recria a empresa demo `Pet Feira Demo` com tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes comerciais.
+- Adicionado script `npm run db:seed` usando `prisma db seed`.
+- Adicionados `@prisma/adapter-pg`, `pg` e `tsx` para executar Prisma Client 7 com PostgreSQL via `DATABASE_URL`.
+- Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
+- `npm run db:seed` nao foi executado neste ciclo porque depende de PostgreSQL acessivel em `DATABASE_URL`.
 
 Ultimo ciclo executado em 2026-06-20:
 - Criada migration inicial em `prisma/migrations/20260620100600_initial_schema/migration.sql`.
@@ -59,7 +62,6 @@ Ultimo ciclo executado em 2026-06-20:
 
 Ainda pendente:
 - Evoluir a agenda local para banco real.
-- Acompanhar merge do PR de seed demonstrativo.
 - Conectar cadastro, agenda e lembretes ao banco.
 - Configurar testes automatizados alem de lint/build.
 

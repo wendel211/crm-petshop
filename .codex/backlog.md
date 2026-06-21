@@ -7,13 +7,13 @@
 - Cadastro local de clientes e pets com formulario funcional, persistencia no navegador e listagem responsiva.
 - Agendamento local de servicos com formulario funcional, persistencia no navegador e atalho de confirmacao por WhatsApp.
 - Schema inicial Prisma/PostgreSQL com entidades multiempresa para clientes, pets, agenda, vendas, interacoes e lembretes.
+- Seed demonstrativo PostgreSQL para uma empresa ficticia de Feira de Santana com tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes.
 - Migration inicial PostgreSQL para criar enums, tabelas, indices, chaves unicas e relacionamentos do schema multiempresa.
 
 ## Agora
 
 - Evoluir o cadastro local para persistencia real em PostgreSQL/Prisma.
 - Evoluir o agendamento local para persistencia real em PostgreSQL/Prisma.
-- Acompanhar merge do PR de seed demonstrativo para uma empresa de Feira de Santana.
 - Criar agenda de banho, tosa, consulta e vacina.
 - Criar historico de interacoes com cliente.
 
@@ -42,8 +42,9 @@
 
 - `prisma/schema.prisma` define o schema inicial com `companyId` nas entidades de negocio.
 - `prisma.config.ts` carrega `DATABASE_URL` via `.env`.
-- Scripts disponiveis: `npm run db:validate`, `npm run db:generate` e `npm run db:migrate`.
+- Scripts disponiveis: `npm run db:validate`, `npm run db:generate`, `npm run db:migrate` e `npm run db:seed`.
 - `.env.example` documenta uma URL PostgreSQL local para desenvolvimento.
+- `prisma/seed.ts` recria a base demonstrativa `Pet Feira Demo` para testes comerciais e apresentacoes.
 - `prisma/migrations/20260620100600_initial_schema/migration.sql` contem a migration inicial gerada a partir do schema atual.
 - `prisma/migrations/migration_lock.toml` registra PostgreSQL como provider das migrations.
 
