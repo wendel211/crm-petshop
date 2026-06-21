@@ -45,19 +45,27 @@ Ultimo ciclo executado em 2026-06-13:
 - Adicionados scripts `db:validate`, `db:generate` e `db:migrate`.
 - Adicionado `.env.example` para orientar `DATABASE_URL` local.
 
+Ultimo ciclo executado em 2026-06-19:
+- Adicionado seed demonstrativo para uma empresa ficticia de Feira de Santana.
+- Seed recria a empresa demo `Pet Feira Demo` com tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes comerciais.
+- Adicionado script `npm run db:seed` usando `prisma db seed`.
+- Adicionados `@prisma/adapter-pg`, `pg` e `tsx` para executar Prisma Client 7 com PostgreSQL via `DATABASE_URL`.
+- Validacoes locais passaram: `npm run db:validate`, `npm run db:generate`, `npm run lint`, `npm run typecheck` e `npm run build`.
+- `npm run db:seed` nao foi executado neste ciclo porque depende de PostgreSQL acessivel em `DATABASE_URL`.
+
 Ainda pendente:
 - Evoluir a agenda local para banco real.
-- Criar migration inicial e seed demonstrativo em PostgreSQL.
+- Criar migration inicial em PostgreSQL.
 - Conectar cadastro, agenda e lembretes ao banco.
 - Configurar testes automatizados alem de lint/build.
 
 ## Preferencia atual de ciclo
 
-Executar diariamente as 09:00 no horario de Brasilia.
+Executar diariamente as 09:30 no horario de Brasilia.
 
 ## Proxima acao recomendada
 
-Criar migration inicial, seed demonstrativo de pet shop em Feira de Santana e preparar as primeiras rotas server-side para cadastro e agenda.
+Criar migration inicial em PostgreSQL e preparar as primeiras rotas server-side para cadastro e agenda.
 
 ## Preferencia de publicacao
 
