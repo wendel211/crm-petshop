@@ -9,11 +9,13 @@
 - Schema inicial Prisma/PostgreSQL com entidades multiempresa para clientes, pets, agenda, vendas, interacoes e lembretes.
 - Seed demonstrativo PostgreSQL para uma empresa ficticia de Feira de Santana com tutores, pets, servicos, produtos, venda, interacoes, agenda e lembretes.
 - Migration inicial PostgreSQL para criar enums, tabelas, indices, chaves unicas e relacionamentos do schema multiempresa.
+- Rotas server-side iniciais com Prisma para listar clientes recentes e proximos agendamentos.
 
 ## Agora
 
 - Evoluir o cadastro local para persistencia real em PostgreSQL/Prisma.
 - Evoluir o agendamento local para persistencia real em PostgreSQL/Prisma.
+- Conectar a dashboard aos endpoints reais com fallback local enquanto o banco nao estiver configurado.
 - Criar agenda de banho, tosa, consulta e vacina.
 - Criar historico de interacoes com cliente.
 
@@ -47,6 +49,9 @@
 - `prisma/seed.ts` recria a base demonstrativa `Pet Feira Demo` para testes comerciais e apresentacoes.
 - `prisma/migrations/20260620100600_initial_schema/migration.sql` contem a migration inicial gerada a partir do schema atual.
 - `prisma/migrations/migration_lock.toml` registra PostgreSQL como provider das migrations.
+- `src/lib/prisma.ts` centraliza o Prisma Client com inicializacao preguicosa.
+- `src/lib/crm-data.ts` concentra leituras server-side para clientes e agenda.
+- `/api/customers` e `/api/appointments` expoem os primeiros dados reais para a interface.
 
 ## Proximas features comerciais
 
